@@ -7,7 +7,7 @@
 
 - [x] Customer Page
     –Each user may be vegetarian and/or allergic to gluten.
-    –Each user can indicate a preference for organic or non-organic products.
+- [] Each user can indicate a preference for organic or non-organic products.
 
 - [x] Product page
     –Items should be priced. (to add to the code provided)
