@@ -7,6 +7,11 @@
 
 <body>
 
+  <header>
+    <!-- Grocery Name -->
+    <h2>U-OttaEat</h2>
+  </header>
+
 <!-- Tab links, each one with an onclick event associated with it -->
 <div class="tab">
   <button class="tablinks" onclick="openInfo(event, 'Client')">Client</button>
@@ -20,11 +25,20 @@
   <p>Tell us a bit about you.</p>
 	Choose a Category:
 	<select id="dietSelect" name="dietSelect" onchange="populateListProductChoices(this.id, 'displayProduct')">
-	<option value=""></option>
-	<option value="Vegetarian">Vegetarian</option>
-    <option value="GlutenFree">GlutenFree</option>
     <option value="None">None</option>
+	  <option value="Vegetarian">Vegetarian</option>
+    <option value="GlutenFree">GlutenFree</option>
+    <!-- Added more options here, such as diabetic, lactose intolerant - Matt -->
+    <option value="Diabetic">Diabetic</option>
+    <option value="Lactose Intolerant">Lactose Intolerant</option>
+    <option value="Pescatarian ">Pescatarian</option>
 	</select>
+  <br>
+  <br>
+  <!-- Enlarge text for Lucie here, change css as you see fit - Matt -->
+  <button id="enlargeText" type="button" class="block" value="false" onclick="enlargeText()">
+    Enlarge Text
+  </button>
 </div>
 
 <div id="Products" class="tabcontent">
@@ -35,6 +49,7 @@
 	 <button id="addCart" type="button" class="block" onclick="selectedItems()">
 		Add selected items to cart.
 	</button>
+  <!-- TODO Populate initial products -->
 </div>
 
 <div id="Cart" class="tabcontent">

@@ -36,6 +36,8 @@ function populateListProductChoices(slct1, slct2) {
 		
 	// obtain a reduced list of products based on restrictions
     var optionArray = restrictListProducts(products, s1.value);
+	// Sort the via price, ascending - Matt
+	optionArray.sort((a, b) => a[1] - b[1]);
 
 	// for each item in the array, create a checkbox element, each containing information such as:
 	// <input type="checkbox" name="product" value="Bread">
@@ -43,7 +45,13 @@ function populateListProductChoices(slct1, slct2) {
 		
 	for (i = 0; i < optionArray.length; i++) {
 			
-		var productName = optionArray[i];
+		var productName = optionArray[i][0];
+		let productPrice = optionArray[i][1];
+
+		// Some added context here
+		productPrice = " $" + productPrice;
+		productName += productPrice;
+
 		// create the checkbox and add in HTML DOM
 		var checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
@@ -79,8 +87,11 @@ function selectedItems(){
 	para.innerHTML = "You selected : ";
 	para.appendChild(document.createElement("br"));
 	for (i = 0; i < ele.length; i++) { 
+		// Splitting the elem to get prices - Matt
+		elemSplit = ele[i].value.split(" ");
 		if (ele[i].checked) {
-			para.appendChild(document.createTextNode(ele[i].value));
+			para.appendChild(document.createTextNode(elemSplit[0]));
+			para.appendChild(document.createTextNode(" " + elemSplit[1]));
 			para.appendChild(document.createElement("br"));
 			chosenProducts.push(ele[i].value);
 		}
@@ -88,7 +99,19 @@ function selectedItems(){
 		
 	// add paragraph and total price
 	c.appendChild(para);
-	c.appendChild(document.createTextNode("Total Price is " + getTotalPrice(chosenProducts)));
+	c.appendChild(document.createTextNode("Total Price is $" + getTotalPrice(chosenProducts)));
 		
 }
 
+// Change size of text for visually impaired
+function enlargeText() {
+	if (document.getElementById("enlargeText").value == "false") {
+		document.body.style.fontSize = '150%';
+		document.getElementById("enlargeText").value = "true";
+	}
+	else {
+		document.body.style.fontSize = '100%';
+		document.getElementById("enlargeText").value = "false";
+	}
+	
+}

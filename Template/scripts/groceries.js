@@ -1,44 +1,89 @@
 	
 // Array of products, each product is an object with different fieldset
-// A set of ingredients should be added to products		 
+// A set of ingredients should be added to products		
 
+// I changed the schema so it follows assignment structure, format like this
+// for future products to add - Matt 
 var products = [
 	{
 		name: "brocoli",
-		vegetarian: true,
-		glutenFree: true,
+		clientStatus: {
+			vegetarian: true,
+			glutenFree: true,
+			diabetic: true,
+			lactoseIntolerant: true,
+			pescatarian: true
+		},
+		organic: true,
+		image: "",
 		price: 1.99
 	},
 	{
 		name: "bread",
-		vegetarian: true,
-		glutenFree: false,
+		clientStatus: {
+			vegetarian: true,
+			glutenFree: false,
+			diabetic: true,
+			lactoseIntolerant: true,
+			pescatarian: true
+		},
+		organic: true,
+		image: "",
 		price: 2.35
 	},
 	{
 		name: "salmon",
-		vegetarian: false,
-		glutenFree: true,
+		clientStatus: {
+			vegetarian: false,
+			glutenFree: true,
+			diabetic: true,
+			lactoseIntolerant: true,
+			pescatarian: false
+		},
+		organic: true,
+		image: "",
 		price: 10.00
 	}
 ];
-	
+
+function appendProduct(products, data) {
+	for (let i = 0; i < data.length; i++) {
+		products.append(data[i])
+	}
+}
 
 
 // given restrictions provided, make a reduced list of products
 // prices should be included in this list, as well as a sort based on price
-
 function restrictListProducts(prods, restriction) {
 	let product_names = [];
+	// I added data into list so we can carry price information on the return - Matt
+	data = []
 	for (let i=0; i<prods.length; i+=1) {
-		if ((restriction == "Vegetarian") && (prods[i].vegetarian == true)){
-			product_names.push(prods[i].name);
+		if ((restriction == "Vegetarian") && (prods[i].clientStatus.vegetarian == true)){
+			data = [prods[i].name, prods[i].price];
+			product_names.push(data);
 		}
-		else if ((restriction == "GlutenFree") && (prods[i].glutenFree == true)){
-			product_names.push(prods[i].name);
+		else if ((restriction == "GlutenFree") && (prods[i].clientStatus.glutenFree == true)){
+			data = [prods[i].name, prods[i].price];
+			product_names.push(data);
 		}
 		else if (restriction == "None"){
-			product_names.push(prods[i].name);
+			data = [prods[i].name, prods[i].price];
+			product_names.push(data);
+		}
+		// Need to add other restrictions per assignment - Matt
+		else if ((restriction == "Diabetic") && (prods[i].clientStatus.diabetic == true)){
+			data = [prods[i].name, prods[i].price];
+			product_names.push(data);
+		}
+		else if ((restriction == "Lactose Intolerant") && (prods[i].clientStatus.lactoseIntolerant == true)){
+			data = [prods[i].name, prods[i].price];
+			product_names.push(data);
+		}
+		else if ((restriction == "Pescatarian") && (prods[i].clientStatus.pescatarian == true)){
+			data = [prods[i].name, prods[i].price];
+			product_names.push(data);
 		}
 	}
 	return product_names;
