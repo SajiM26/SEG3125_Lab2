@@ -17,8 +17,7 @@ header {
   text-align: center;
 }
 
-/* Tab Navigation - Modernized from W3Schools */
-.tab {
+                                 .tab {
   display: flex;
   justify-content: center;
   background-color: #fff;
@@ -46,7 +45,7 @@ header {
 }
 
 .tab button.active {
-  color: #27ae60; /* Green theme for grocery */
+  color: #27ae60;
   border-bottom: 3px solid #27ae60;
 }
 
@@ -112,7 +111,7 @@ footer {
   font-style: italic;
 }
 
-/* Accessibility - Lucie's Vision requirement */
+/* Accessibility */
 #enlargeText {
   background-color: #34495e;
   max-width: 200px;
