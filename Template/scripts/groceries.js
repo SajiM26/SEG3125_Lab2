@@ -5,6 +5,7 @@
 // I changed the schema so it follows assignment structure, format like this
 // for future products to add - Matt 
 var products = [
+	//all images source: https://pngtree.com
 	{
 		name: "brocoli",
 		clientStatus: {
@@ -15,7 +16,7 @@ var products = [
 			pescatarian: true
 		},
 		organic: true,
-		image: "",
+		image: "Image/broccoli.png",
 		price: 1.99
 	},
 	{
@@ -28,7 +29,7 @@ var products = [
 			pescatarian: true
 		},
 		organic: true,
-		image: "",
+		image: "Image/bread.png",
 		price: 2.35
 	},
 	{
@@ -41,8 +42,124 @@ var products = [
 			pescatarian: false
 		},
 		organic: true,
-		image: "",
+		image: "Image/salmon.png",
 		price: 10.00
+	},
+	{
+		name: "yogurt",
+		clientStatus: {
+			vegetarian: true,
+			glutenFree: true,
+			diabetic: true,
+			lactoseIntolerant: false,
+			pescatarian: true
+		},
+		organic: false,
+		image: "Image/yogurt.png",
+		price: 3.50
+	},
+	{
+		name: "almond milk",
+		clientStatus: {
+			vegetarian: true,
+			glutenFree: true,
+			diabetic: true,
+			lactoseIntolerant: true,
+			pescatarian: true
+		},
+		organic: false,
+		image: "Image/almond_milk.png",
+		price: 4.99
+	},
+	{
+		name: "apples",
+		clientStatus: {
+			vegetarian: true, 
+			glutenFree: true, 
+			diabetic: false, 
+			lactoseIntolerant: true, 
+			pescatarian: true 
+		},
+		organic: true,
+		image: "Image/apple.png",
+		price: 3.50
+	},
+	{
+		name: "milk (1L)",
+		clientStatus: { 
+			vegetarian: true, 
+			glutenFree: true, 
+			diabetic: true, 
+			lactoseIntolerant: false, 
+			pescatarian: true 
+		},
+		organic: false,
+		image: "Image/milk.png",
+		price: 4.25
+	},
+	{
+		name: "cheese blocks",
+		clientStatus: { 
+			vegetarian: true, 
+			glutenFree: true, 
+			diabetic: true, 
+			lactoseIntolerant: false, 
+			pescatarian: true 
+		},
+		organic: false,
+		image: "Image/cheese.png",
+		price: 7.99
+	},
+	{
+		name: "chicken breast",
+		clientStatus: { 
+			vegetarian: false, 
+			glutenFree: true, 
+			diabetic: true, 
+			lactoseIntolerant: true, 
+			pescatarian: false 
+		},
+		organic: false,
+		image: "Image/chicken.png",
+		price: 9.00
+	},
+	{
+		name: "tofu",
+		clientStatus: { 
+			vegetarian: true, 
+			glutenFree: true, 
+			diabetic: true, 
+			lactoseIntolerant: true, 
+			pescatarian: true 
+		},
+		organic: true,
+		image: "Image/tofu.png",
+		price: 2.99
+	},
+	{
+		name: "pasta",
+		clientStatus: { 
+			vegetarian: true, 
+			glutenFree: false, 
+			diabetic: true, 
+			lactoseIntolerant: true, 
+			pescatarian: true 
+		},
+		organic: false,
+		image: "Image/pasta.png",
+		price: 5.50
+	},
+	{
+		name: "eggs (dozen)",
+		clientStatus: { vegetarian: true, 
+			glutenFree: true, 
+			diabetic: true, 
+			lactoseIntolerant: true, 
+			pescatarian: true 
+		},
+		organic: true,
+		image: "Image/eggs.png",
+		price: 4.99
 	}
 ];
 

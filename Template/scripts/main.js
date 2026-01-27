@@ -1,3 +1,4 @@
+var globalCart = [];
 
 // This function is called when any of the tab is clicked
 // It is adapted from https://www.w3schools.com/howto/howto_js_tabs.asp
@@ -44,28 +45,37 @@ function populateListProductChoices(slct1, slct2) {
 	// <label for="Bread">Bread/label><br>
 		
 	for (i = 0; i < optionArray.length; i++) {
-			
-		var productName = optionArray[i][0];
+
+		let nameOnly = optionArray[i][0]; 
 		let productPrice = optionArray[i][1];
+		let productObj = products.find(p => p.name === nameOnly);
+
+		//Create the image element
+		var img = document.createElement("img");
+		img.src = productObj.image; 
+		img.style.width = "50px";
+		img.style.height = "50px";
+		img.style.marginRight = "10px";
+		s2.appendChild(img);
 
 		// Some added context here
-		productPrice = " $" + productPrice;
-		productName += productPrice;
-
-		// create the checkbox and add in HTML DOM
+		/*productPrice = " $" + productPrice;
+		productName += productPrice;*/
+			
+		//Create the checkbox
 		var checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
 		checkbox.name = "product";
-		checkbox.value = productName;
+		checkbox.value = nameOnly; 
 		s2.appendChild(checkbox);
 		
-		// create a label for the checkbox, and also add in HTML DOM
-		var label = document.createElement('label')
-		label.htmlFor = productName;
-		label.appendChild(document.createTextNode(productName));
+		//Create the label (This is where we show the price to the user)
+		var label = document.createElement('label');
+		label.htmlFor = nameOnly;
+		var labelText = nameOnly + " $" + productPrice;
+		label.appendChild(document.createTextNode(labelText));
 		s2.appendChild(label);
 		
-		// create a breakline node and add in HTML DOM
 		s2.appendChild(document.createElement("br"));    
 	}
 }
@@ -75,32 +85,35 @@ function populateListProductChoices(slct1, slct2) {
 // We build a paragraph to contain the list of selected items, and the total price
 
 function selectedItems() {
-	var ele = document.getElementsByName("product");
-	var chosenProducts = [];
-	
-	var c = document.getElementById('displayCart');
-	c.innerHTML = "";
-	
-	var para = document.createElement("P");
-	para.innerHTML = "You selected : ";
-	para.appendChild(document.createElement("br"));
+    var ele = document.getElementsByName("product");
+    
+    // Add newly checked items to the globalCart if they aren't already there
+    for (let i = 0; i < ele.length; i++) {
+        if (ele[i].checked) {
+            let itemName = ele[i].value.split(" $")[0];
+            // Only add if it's not already in the cart to avoid duplicates
+            if (globalCart.indexOf(itemName) === -1) {
+                globalCart.push(itemName);
+            }
+        }
+    }
 
-	for (i = 0; i < ele.length; i++) { 
-		if (ele[i].checked) {
-			// ele[i].value contains "ProductName $Price"
-			// Split by " $" to get just the name part for the array
-			let nameOnly = ele[i].value.split(" $")[0];
-			
-			para.appendChild(document.createTextNode(ele[i].value));
-			para.appendChild(document.createElement("br"));
-			
-			// Push only the name so getTotalPrice can find it
-			chosenProducts.push(nameOnly);
-		}
-	}
-		
-	c.appendChild(para);
-	c.appendChild(document.createTextNode("Total Price is $" + getTotalPrice(chosenProducts).toFixed(2)));
+    // 2. Refresh the Cart Display
+    var c = document.getElementById('displayCart');
+    c.innerHTML = ""; // Clear the visual display to redraw it
+    
+    var para = document.createElement("P");
+    para.innerHTML = "<b>Items in your cart:</b><br>";
+
+    // Loop through the globalCart to show everything added so far
+    globalCart.forEach(function(itemName) {
+        let productObj = products.find(p => p.name === itemName);
+        para.appendChild(document.createTextNode(productObj.name + " $" + productObj.price.toFixed(2)));
+        para.appendChild(document.createElement("br"));
+    });
+        
+    c.appendChild(para);
+    c.appendChild(document.createTextNode("Total Price is $" + getTotalPrice(globalCart).toFixed(2)));
 }
 
 // Change size of text for visually impaired
