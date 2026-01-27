@@ -74,33 +74,33 @@ function populateListProductChoices(slct1, slct2) {
 // The purpose is to build the HTML to be displayed (a Paragraph) 
 // We build a paragraph to contain the list of selected items, and the total price
 
-function selectedItems(){
-	
+function selectedItems() {
 	var ele = document.getElementsByName("product");
 	var chosenProducts = [];
 	
 	var c = document.getElementById('displayCart');
 	c.innerHTML = "";
 	
-	// build list of selected item
 	var para = document.createElement("P");
 	para.innerHTML = "You selected : ";
 	para.appendChild(document.createElement("br"));
+
 	for (i = 0; i < ele.length; i++) { 
-		// Splitting the elem to get prices - Matt
-		elemSplit = ele[i].value.split(" ");
 		if (ele[i].checked) {
-			para.appendChild(document.createTextNode(elemSplit[0]));
-			para.appendChild(document.createTextNode(" " + elemSplit[1]));
+			// ele[i].value contains "ProductName $Price"
+			// Split by " $" to get just the name part for the array
+			let nameOnly = ele[i].value.split(" $")[0];
+			
+			para.appendChild(document.createTextNode(ele[i].value));
 			para.appendChild(document.createElement("br"));
-			chosenProducts.push(ele[i].value);
+			
+			// Push only the name so getTotalPrice can find it
+			chosenProducts.push(nameOnly);
 		}
 	}
 		
-	// add paragraph and total price
 	c.appendChild(para);
-	c.appendChild(document.createTextNode("Total Price is $" + getTotalPrice(chosenProducts)));
-		
+	c.appendChild(document.createTextNode("Total Price is $" + getTotalPrice(chosenProducts).toFixed(2)));
 }
 
 // Change size of text for visually impaired
