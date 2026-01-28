@@ -84,32 +84,51 @@ function populateListProductChoices(slct1, slct2) {
 // The purpose is to build the HTML to be displayed (a Paragraph) 
 // We build a paragraph to contain the list of selected items, and the total price
 
+// This replaces your old selectedItems function
 function selectedItems() {
     var ele = document.getElementsByName("product");
     
-    // Add newly checked items to the globalCart if they aren't already there
     for (let i = 0; i < ele.length; i++) {
         if (ele[i].checked) {
-            let itemName = ele[i].value.split(" $")[0];
-            // Only add if it's not already in the cart to avoid duplicates
+            let itemName = ele[i].value; 
+            // Add to cart if it's not already in there
             if (globalCart.indexOf(itemName) === -1) {
                 globalCart.push(itemName);
             }
         }
     }
+    updateCartDisplay();
+}
 
-    // 2. Refresh the Cart Display
+// New function to handle drawing the cart and the Remove buttons
+function updateCartDisplay() {
     var c = document.getElementById('displayCart');
-    c.innerHTML = ""; // Clear the visual display to redraw it
+    c.innerHTML = ""; 
     
     var para = document.createElement("P");
     para.innerHTML = "<b>Items in your cart:</b><br>";
 
-    // Loop through the globalCart to show everything added so far
     globalCart.forEach(function(itemName) {
         let productObj = products.find(p => p.name === itemName);
-        para.appendChild(document.createTextNode(productObj.name + " $" + productObj.price.toFixed(2)));
-        para.appendChild(document.createElement("br"));
+        
+        // Create a container for the text and the button
+        var itemDiv = document.createElement("div");
+        itemDiv.style.margin = "10px 0";
+        
+        var text = document.createTextNode(productObj.name + " $" + productObj.price.toFixed(2));
+        itemDiv.appendChild(text);
+
+        // Create the Remove button
+        var removeBtn = document.createElement("button");
+        removeBtn.innerHTML = "Remove";
+        removeBtn.type = "button";
+        removeBtn.style.marginLeft = "15px";
+        removeBtn.style.cursor = "pointer";
+        
+        removeBtn.onclick = function() { removeItemFromCart(itemName); };
+        
+        itemDiv.appendChild(removeBtn);
+        para.appendChild(itemDiv);
     });
         
     c.appendChild(para);
@@ -127,4 +146,14 @@ function enlargeText() {
 		document.getElementById("enlargeText").value = "false";
 	}
 	
+}
+
+function removeItemFromCart(itemName) {
+    const index = globalCart.indexOf(itemName);
+    if (index > -1) {
+        // Removes the item from our global list
+        globalCart.splice(index, 1);
+    }
+    // Refresh the cart display so the user sees the item is gone
+    updateCartDisplay();
 }
