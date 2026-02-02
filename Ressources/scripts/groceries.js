@@ -16,7 +16,7 @@ var products = [
 			pescatarian: true
 		},
 		organic: true,
-		image: "Ressources/images/broccoli.png",
+		image: "images/broccoli.png",
 		price: 1.99
 	},
 	{
