@@ -2,7 +2,7 @@
 <html>
 <head>
 	<! This style sheet is taken from  https://www.w3schools.com/howto/howto_js_tabs.asp>
-	<link href="styles/style.css" rel="stylesheet" type="text/css">
+	<link href="Ressources/styles/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -22,23 +22,22 @@
 <!-- Tab content -->
 <div id="Client" class="tabcontent">
   <h3>Client Information</h3>
-  <p>Tell us a bit about you.</p>
-	Choose a Category:
-	<select id="dietSelect" name="dietSelect" onchange="populateListProductChoices(this.id, 'displayProduct')">
-    <option value="None">None</option>
-	  <option value="Vegetarian">Vegetarian</option>
-    <option value="GlutenFree">GlutenFree</option>
-    <!-- Added more options here, such as diabetic, lactose intolerant - Matt -->
-    <option value="Diabetic">Diabetic</option>
-    <option value="Lactose Intolerant">Lactose Intolerant</option>
-    <option value="Pescatarian">Pescatarian</option>
-	</select>
+  <p>Tell us a bit about you. Click once to include this category, and twice to exlude it.</p>
+  <p>Choose your categories:</p>
+  <input type="checkbox" name="dietSelect" value="vegetarian" onclick="restrictions(this.value)">Vegetarian<br>
+  <input type="checkbox" name="dietSelect" value="glutenFree" onclick="restrictions(this.value)">Gluten Free<br>
+  <!-- Added more options here, such as diabetic, lactose intolerant - Matt -->
+  <input type="checkbox" name="dietSelect" value="diabetic" onclick="restrictions(this.value)">Diabetic<br>
+  <input type="checkbox" name="dietSelect" value="lactoseIntolerant" onclick="restrictions(this.value)">Lactose Intolerant<br>
+  <input type="checkbox" name="dietSelect" value="pescatarian" onclick="restrictions(this.value)">Pescatarian<br>
+  
   <br>
   <br>
   <!-- Enlarge text for Lucie here, change css as you see fit - Matt -->
   <button id="enlargeText" type="button" class="block" value="false" onclick="enlargeText()">
     Enlarge Text
   </button>
+
 </div>
 
 <div id="Products" class="tabcontent">
@@ -58,10 +57,11 @@
   <div id="displayCart"></div>
 </div>
 
-<script src="scripts/groceries.js"></script>
-<script src="scripts/main.js"></script>
+<script src="Ressources/scripts/groceries.js"></script>
+<script src="Ressources/scripts/main.js"></script>
 
  <footer>
+  <p>Your current restriction is: <span id="currentRestriction">None</span></p>
 <p id="signature">Site created by Min Key Park <br> and Sajida Mohamed</p>	
 </footer> 
 

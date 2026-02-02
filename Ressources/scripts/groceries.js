@@ -16,7 +16,7 @@ var products = [
 			pescatarian: true
 		},
 		organic: true,
-		image: "Image/broccoli.png",
+		image: "Ressources/images/broccoli.png",
 		price: 1.99
 	},
 	{
@@ -172,34 +172,25 @@ function appendProduct(products, data) {
 
 // given restrictions provided, make a reduced list of products
 // prices should be included in this list, as well as a sort based on price
-function restrictListProducts(prods, restriction) {
+function restrictListProducts(allProducts, restrictions) {
 	let product_names = [];
 	// I added data into list so we can carry price information on the return - Matt
 	data = []
-	for (let i=0; i<prods.length; i+=1) {
-		if ((restriction == "Vegetarian") && (prods[i].clientStatus.vegetarian == true)){
-			data = [prods[i].name, prods[i].price];
-			product_names.push(data);
+	for(let i=0; i<allProducts.length; i++) {
+		let product = allProducts[i];
+		let includeProduct = true;
+
+		for (let j=0; j<restrictions.length; j++) {
+			let restriction = restrictions[j];
+			// Value for checkbox MUST be the same as key in clientStatus object
+			if(product.clientStatus[restriction] != true) {
+				includeProduct = false;
+				break;
+			}
 		}
-		else if ((restriction == "GlutenFree") && (prods[i].clientStatus.glutenFree == true)){
-			data = [prods[i].name, prods[i].price];
-			product_names.push(data);
-		}
-		else if (restriction == "None"){
-			data = [prods[i].name, prods[i].price];
-			product_names.push(data);
-		}
-		// Need to add other restrictions per assignment - Matt
-		else if ((restriction == "Diabetic") && (prods[i].clientStatus.diabetic == true)){
-			data = [prods[i].name, prods[i].price];
-			product_names.push(data);
-		}
-		else if ((restriction == "Lactose Intolerant") && (prods[i].clientStatus.lactoseIntolerant == true)){
-			data = [prods[i].name, prods[i].price];
-			product_names.push(data);
-		}
-		else if ((restriction == "Pescatarian") && (prods[i].clientStatus.pescatarian == true)){
-			data = [prods[i].name, prods[i].price];
+
+		if(includeProduct) {
+			data = [product.name, product.price];
 			product_names.push(data);
 		}
 	}
