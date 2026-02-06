@@ -158,54 +158,112 @@ function selectedItems() {
 }
 
 // New function to handle drawing the cart and the Remove buttons used online help to get items from a page using divs/tables and rows
+// Updated function to match Products tab styling with individual and bulk removal
 function updateCartDisplay() {
     const c = document.getElementById('displayCart');
     c.innerHTML = "";
 
-    const para = document.createElement("p");
-    para.innerHTML = "<b>Items in your cart:</b><br>";
+    if (globalCart.length === 0) {
+        c.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+    }
+
+    const cartContainer = document.createElement("div");
 
     globalCart.forEach(item => {
         const productObj = products.find(p => p.name === item.name);
 
-        const itemDiv = document.createElement("div");
-        itemDiv.style.margin = "10px 0";
+        // Create a row container similar to populateListProductChoices
+        var itemRow = document.createElement("div");
+        itemRow.style.display = "flex";
+        itemRow.style.alignItems = "center";
+        itemRow.style.marginBottom = "15px";
+        itemRow.style.gap = "15px";
 
-        const text = document.createTextNode(`${item.name} x${item.quantity} - $${(productObj.price * item.quantity).toFixed(2)}`);
-        itemDiv.appendChild(text);
+        // Image
+        var img = document.createElement("img");
+        img.src = productObj.image;
+        img.style.width = "50px";
+        img.style.height = "50px";
+        itemRow.appendChild(img);
 
-        const removeBtn = document.createElement("button");
-        removeBtn.innerText = "Remove";
-        removeBtn.type = "button";
-        removeBtn.style.marginLeft = "15px";
-        removeBtn.style.cursor = "pointer";
-        removeBtn.onclick = () => removeItemFromCart(item.name);
-        itemDiv.appendChild(removeBtn);
+        // Label with Name and Subtotal
+        var label = document.createElement('label');
+        let subtotal = (productObj.price * item.quantity).toFixed(2);
+        label.appendChild(document.createTextNode(`${item.name} (x${item.quantity}) - $${subtotal}`));
+        itemRow.appendChild(label);
 
-        para.appendChild(itemDiv);
+        // Controls container
+        var ctrlDiv = document.createElement("div");
+        ctrlDiv.style.display = "flex";
+        ctrlDiv.style.alignItems = "center";
+        ctrlDiv.style.gap = "10px";
+
+        // Remove One Button (-)
+        let minusBtn = document.createElement("button");
+        minusBtn.innerText = "-";
+        minusBtn.style.width = "30px";
+        minusBtn.style.height = "30px";
+        minusBtn.style.cursor = "pointer";
+        minusBtn.onclick = () => removeOneFromCart(item.name);
+
+        // Remove All of this item Button (Trash/Remove)
+        let removeAllBtn = document.createElement("button");
+        removeAllBtn.innerText = "Remove All";
+        removeAllBtn.style.padding = "5px 10px";
+        removeAllBtn.style.cursor = "pointer";
+        removeAllBtn.onclick = () => removeItemFromCart(item.name);
+
+        ctrlDiv.appendChild(minusBtn);
+        ctrlDiv.appendChild(removeAllBtn);
+
+        itemRow.appendChild(ctrlDiv);
+        cartContainer.appendChild(itemRow);
     });
 
-    c.appendChild(para);
+    c.appendChild(cartContainer);
 
+    // Total Price Display
     const total = globalCart.reduce((sum, item) => {
         const productObj = products.find(p => p.name === item.name);
         return sum + productObj.price * item.quantity;
     }, 0);
 
-    c.appendChild(document.createTextNode(`Total Price: $${total.toFixed(2)}`));
+    const totalDiv = document.createElement("div");
+    totalDiv.style.marginTop = "20px";
+    totalDiv.style.fontWeight = "bold";
+    totalDiv.style.fontSize = "1.2rem";
+    totalDiv.innerText = `Total Price: $${total.toFixed(2)}`;
+    c.appendChild(totalDiv);
+
+    // Bulk Clear Button
+    const clearBtn = document.createElement("button");
+    clearBtn.innerText = "Clear Entire Cart";
+    clearBtn.className = "block"; // Using your existing CSS class
+    clearBtn.style.backgroundColor = "#e74c3c"; // Red color for destructive action
+    clearBtn.onclick = () => clearCart();
+    c.appendChild(clearBtn);
 }
 
-// Change size of text for visually impaired
-function enlargeText() {
-	if (document.getElementById("enlargeText").value == "false") {
-		document.body.style.fontSize = '150%';
-		document.getElementById("enlargeText").value = "true";
-	}
-	else {
-		document.body.style.fontSize = '100%';
-		document.getElementById("enlargeText").value = "false";
-	}
-	
+// New helper to decrement quantity
+function removeOneFromCart(productName) {
+    let item = globalCart.find(item => item.name === productName);
+    if (item) {
+        item.quantity -= 1;
+        if (item.quantity <= 0) {
+            removeItemFromCart(productName);
+        } else {
+            updateCartDisplay();
+        }
+    }
+}
+
+// New helper to clear everything
+function clearCart() {
+    if (confirm("Are you sure you want to empty your cart?")) {
+        globalCart = [];
+        updateCartDisplay();
+    }
 }
 
 function removeItemFromCart(productName) {
