@@ -43,12 +43,35 @@
 <div id="Products" class="tabcontent">
   <h3>Your targeted products</h3>
   <p>We preselected products based on your restrictions.</p>
-	 Choose items to buy:
-	 <div id="displayProduct"></div>
-	 <button id="addCart" type="button" class="block" onclick="selectedItems()">
-		Add selected items to cart.
-	</button>
-  <!-- TODO Populate initial products -->
+  
+  <div style="text-align: left; margin-bottom: 20px;">
+    <img src="Image/filter.png" id="filterImg" onclick="toggleFilterMenu()" style="width: 40px; cursor: pointer; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+    <div style="font-size: 12px; margin-left: 5px;">Filter & Sort</div>
+  </div>
+
+  <div id="filterMenu" style="display: none; padding: 15px; background: #f1f1f1; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ccc;">
+    
+    <div style="margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+      <label for="sortOrder" style="font-weight: bold;">Sort by:</label><br>
+      <select id="sortOrder" onchange="populateListProductChoices(globalRestrictions, 'displayProduct')" style="margin-top: 5px; width: 100%;">
+        <option value="priceLow">Price: Low to High</option>
+        <option value="priceHigh">Price: High to Low</option>
+        <option value="alphabetical">Name: A-Z</option>
+      </select>
+    </div>
+
+    <p style="margin-top: 0; font-weight: bold;">Filter by Category:</p>
+    <input type="checkbox" name="dietSelect" value="vegetarian" onclick="restrictions(this.value)"> Vegetarian<br>
+    <input type="checkbox" name="dietSelect" value="glutenFree" onclick="restrictions(this.value)"> Gluten Free<br>
+    <input type="checkbox" name="dietSelect" value="diabetic" onclick="restrictions(this.value)"> Diabetic<br>
+    <input type="checkbox" name="dietSelect" value="lactoseIntolerant" onclick="restrictions(this.value)"> Lactose Intolerant<br>
+    <input type="checkbox" name="dietSelect" value="pescatarian" onclick="restrictions(this.value)"> Pescatarian<br>
+  </div>
+
+  <div id="displayProduct"></div>
+  <button id="addCart" type="button" class="block" onclick="selectedItems()">
+    Add selected items to cart.
+  </button>
 </div>
 
 <div id="Cart" class="tabcontent">

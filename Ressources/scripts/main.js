@@ -35,97 +35,76 @@ function openInfo(evt, tabName) {
 
 function populateListProductChoices(restrictions, slct2) {
     var s2 = document.getElementById(slct2);
-	
-	// s2 represents the <div> in the Products tab, which shows the product list, so we first set it empty
     s2.innerHTML = "";
-		
-	// obtain a reduced list of products based on restrictions
+        
     var optionArray = restrictListProducts(products, restrictions);
-	// Sort the via price, ascending - Matt
-	optionArray.sort((a, b) => a[1] - b[1]);
 
-	// for each item in the array, create a checkbox element, each containing information such as:
-	// <input type="checkbox" name="product" value="Bread">
-	// <label for="Bread">Bread/label><br>
-		
-	for (i = 0; i < optionArray.length; i++) {
+    // Multi-Algorithm Sorting
+    const sortOrderElement = document.getElementById("sortOrder");
+    const sortType = sortOrderElement ? sortOrderElement.value : "priceLow";
+    
+    if (sortType === "priceLow") {
+        optionArray.sort((a, b) => a[1] - b[1]); 
+    } else if (sortType === "priceHigh") {
+        optionArray.sort((a, b) => b[1] - a[1]); 
+    } else if (sortType === "alphabetical") {
+        optionArray.sort((a, b) => a[0].localeCompare(b[0])); 
+    }
 
-		let nameOnly = optionArray[i][0]; 
-		let productPrice = optionArray[i][1];
-		let productObj = products.find(p => p.name === nameOnly);
+    // Build the UI rows
+    for (var i = 0; i < optionArray.length; i++) {
+        let nameOnly = optionArray[i][0]; 
+        let productPrice = optionArray[i][1];
+        let productObj = products.find(p => p.name === nameOnly);
 
-		var productTable = document.createElement("div");
+        var productTable = document.createElement("div");
         productTable.style.display = "flex";
         productTable.style.alignItems = "center";
         productTable.style.marginBottom = "15px";
         productTable.style.gap = "15px"; 
 
-		//Create the image element
-		var img = document.createElement("img");
-		img.src = productObj.image; 
-		img.style.width = "50px";
-		img.style.height = "50px";
-		productTable.appendChild(img);
+        var img = document.createElement("img");
+        img.src = productObj.image; 
+        img.style.width = "50px";
+        img.style.height = "50px";
+        productTable.appendChild(img);
 
-		//Create the label (This is where we show the price to the user)
-		var label = document.createElement('label');
-		label.htmlFor = nameOnly;
-		var labelText = nameOnly + " $" + productPrice;
-		label.appendChild(document.createTextNode(labelText));
-		productTable.appendChild(label);
+        var label = document.createElement('label');
+        label.appendChild(document.createTextNode(nameOnly + " $" + productPrice.toFixed(2)));
+        productTable.appendChild(label);
 
-		//Div container to place A +/- buttons and quantity selector
-		var qtyDiv = document.createElement("div");
-		qtyDiv.style.display = "flex";
-		qtyDiv.style.alignItems = "center";
-		qtyDiv.style.gap = "10px";
+        var qtyDiv = document.createElement("div");
+        qtyDiv.style.display = "flex";
+        qtyDiv.style.alignItems = "center";
+        qtyDiv.style.gap = "10px";
 
-		let qtyInput = document.createElement("input");
-		qtyInput.type = "text";
-		qtyInput.name = "quantity";
-		qtyInput.value = 0;
-		qtyInput.min = 0;
-		qtyInput.style.width = "40px";
-		qtyInput.style.textAlign = "center";
-		//qtyInput.readOnly = true; 
+        let qtyInput = document.createElement("input");
+        qtyInput.type = "text";
+        qtyInput.name = "quantity";
+        qtyInput.value = 0;
+        qtyInput.style.width = "40px";
+        qtyInput.style.textAlign = "center";
 
-		let minusButton = document.createElement("button");
-		minusButton.innerText = "-";
-		minusButton.type = "button";
-		minusButton.style.cursor = "pointer";
-		minusButton.style.width = "30px";
-		minusButton.style.height = "30px";
-		minusButton.onclick = () => {
-			if (Number(qtyInput.value) > 0){
-				qtyInput.value = Number(qtyInput.value) - 1;
-			}
-        };
+        let minusButton = document.createElement("button");
+        minusButton.innerText = "-";
+        minusButton.type = "button";
+        minusButton.onclick = (function(input) {
+            return function() { if (Number(input.value) > 0) input.value = Number(input.value) - 1; };
+        })(qtyInput);
 
-		let addButton = document.createElement("button");
-		addButton.innerText = "+";
-		addButton.type = "button";
-		addButton.style.cursor = "pointer";
-		addButton.style.width = "30px";
-		addButton.style.height = "30px";
-		addButton.onclick = () => {
-            qtyInput.value = Number(qtyInput.value) + 1;
-        };
+        let addButton = document.createElement("button");
+        addButton.innerText = "+";
+        addButton.type = "button";
+        addButton.onclick = (function(input) {
+            return function() { input.value = Number(input.value) + 1; };
+        })(qtyInput);
 
-		qtyDiv.appendChild(minusButton);
-		qtyDiv.appendChild(qtyInput);
-		qtyDiv.appendChild(addButton);
-
-
-		productTable.appendChild(qtyDiv);
-		s2.appendChild(productTable);
-
-
-		// Some added context here
-		/*productPrice = " $" + productPrice;
-		productName += productPrice;*/
-
-		
-	}
+        qtyDiv.appendChild(minusButton);
+        qtyDiv.appendChild(qtyInput);
+        qtyDiv.appendChild(addButton);
+        productTable.appendChild(qtyDiv);
+        s2.appendChild(productTable);
+    }
 }
 	
 // This function is called when the "Add selected items to cart" button in clicked
@@ -173,7 +152,6 @@ function updateCartDisplay() {
     globalCart.forEach(item => {
         const productObj = products.find(p => p.name === item.name);
 
-        // Create a row container similar to populateListProductChoices
         var itemRow = document.createElement("div");
         itemRow.style.display = "flex";
         itemRow.style.alignItems = "center";
@@ -199,7 +177,7 @@ function updateCartDisplay() {
         ctrlDiv.style.alignItems = "center";
         ctrlDiv.style.gap = "10px";
 
-        // Remove One Button (-)
+        // Remove One Button
         let minusBtn = document.createElement("button");
         minusBtn.innerText = "-";
         minusBtn.style.width = "30px";
@@ -207,7 +185,7 @@ function updateCartDisplay() {
         minusBtn.style.cursor = "pointer";
         minusBtn.onclick = () => removeOneFromCart(item.name);
 
-        // Remove All of this item Button (Trash/Remove)
+        // Remove All of this item Button
         let removeAllBtn = document.createElement("button");
         removeAllBtn.innerText = "Remove All";
         removeAllBtn.style.padding = "5px 10px";
@@ -239,8 +217,8 @@ function updateCartDisplay() {
     // Bulk Clear Button
     const clearBtn = document.createElement("button");
     clearBtn.innerText = "Clear Entire Cart";
-    clearBtn.className = "block"; // Using your existing CSS class
-    clearBtn.style.backgroundColor = "#e74c3c"; // Red color for destructive action
+    clearBtn.className = "block";
+    clearBtn.style.backgroundColor = "#e74c3c";
     clearBtn.onclick = () => clearCart();
     c.appendChild(clearBtn);
 }
@@ -285,10 +263,20 @@ function updateProductList() {
 } */
 
 function restrictions(value) {
-	if(globalRestrictions.includes(value)) {
-		let index = globalRestrictions.indexOf(value);
-		globalRestrictions.splice(index, 1);
-	} else {
-		globalRestrictions.push(value);
-	}
+    if(globalRestrictions.includes(value)) {
+        let index = globalRestrictions.indexOf(value);
+        globalRestrictions.splice(index, 1);
+    } else {
+        globalRestrictions.push(value);
+    }
+    populateListProductChoices(globalRestrictions, "displayProduct");
+}
+
+function toggleFilterMenu() {
+    var menu = document.getElementById("filterMenu");
+    if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+    } else {
+        menu.style.display = "none";
+    }
 }
