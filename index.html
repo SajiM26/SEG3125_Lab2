@@ -38,6 +38,10 @@
     Enlarge Text
   </button>
 
+  <button class="block" type="button" onclick="document.querySelector('.tablinks[onclick*=\'Products\']').click()">
+    See Available Products &rarr;
+  </button>
+
 </div>
 
 <div id="Products" class="tabcontent">
@@ -69,9 +73,15 @@
   </div>
 
   <div id="displayProduct"></div>
+
   <button id="addCart" type="button" class="block" onclick="selectedItems()">
     Add selected items to cart.
   </button>
+
+  <button class="block" type="button" style="background-color: #e67e22; margin-top: 10px;" onclick="document.querySelector('.tablinks[onclick*=\'Cart\']').click()">
+    See Cart &rarr;
+  </button>
+
 </div>
 
 <div id="Cart" class="tabcontent">
